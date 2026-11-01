@@ -1,7 +1,12 @@
 package br.com.estudos.book_api.repository;
 
-import org.springframework.stereotype.Repository;
+import br.com.estudos.book_api.dto.BookRequest;
+import br.com.estudos.book_api.model.Book;
 
-@Repository
-public class BookRespository {
+import java.util.List;
+
+public interface BookRespository {
+    List<Book> findAll();
+
+    Book save(Book book);
 }
