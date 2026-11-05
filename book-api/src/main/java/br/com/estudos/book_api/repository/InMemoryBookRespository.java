@@ -3,8 +3,10 @@ package br.com.estudos.book_api.repository;
 import br.com.estudos.book_api.model.Book;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,7 +17,7 @@ public class InMemoryBookRespository implements BookRespository{
 
     @Override
     public List<Book> findAll() {
-        return List.of();
+        return new ArrayList<>(books.values());
     }
 
     @Override
@@ -31,5 +33,10 @@ public class InMemoryBookRespository implements BookRespository{
         books.put(id, savedBook);
 
         return savedBook;
+    }
+
+    public Optional<Book> getByID(Long id){
+        Book book = books.get(id);
+        return Optional.ofNullable(book);
     }
 }

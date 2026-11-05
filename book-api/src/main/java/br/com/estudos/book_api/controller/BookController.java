@@ -20,6 +20,9 @@ public class BookController {
 
     @GetMapping
     public List<BookResponse> findAll(){
+        List<Book> books = bookService.findAll();
+        System.out.println("Quantidade de livros: " + books.size());
+
         return bookService.findAll()
                 .stream()
                 .map(book -> new BookResponse(
@@ -37,4 +40,13 @@ public class BookController {
         Book savedBook = bookService.save(book);
         return new BookResponse(savedBook.id(), savedBook.title(), savedBook.author());
     }
+
+    @GetMapping("/{id}")
+    public BookResponse getById(@PathVariable Long id){
+        Book book = bookService.getById(id);
+        BookResponse bookResponse = new BookResponse(book.id(), book.title(), book.author());
+        return bookResponse;
+    }
+
+
 }
