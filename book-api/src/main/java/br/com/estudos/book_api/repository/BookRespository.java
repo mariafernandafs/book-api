@@ -12,4 +12,8 @@ public interface BookRespository {
     Book save(Book book);
 
     Optional<Book> getByID(Long id);
+
+    Optional<Book> updateByID(Long id, Book book);
+
+    void delete(Long id);
 }

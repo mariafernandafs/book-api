@@ -39,4 +39,26 @@ public class InMemoryBookRespository implements BookRespository{
         Book book = books.get(id);
         return Optional.ofNullable(book);
     }
+
+    @Override
+    public Optional<Book> updateByID(Long id, Book book) {
+        Optional<Book> foundedBook = getByID(id);
+        
+        if(foundedBook.isPresent()){
+            Book existingBook = foundedBook.get();
+            Book updatedBook  = new Book(existingBook.id(), book.title(), book.author());
+
+            books.replace(existingBook.id(), updatedBook);
+            return Optional.ofNullable(updatedBook);
+        }
+        return Optional.empty();
+    }
+    @Override
+    public void delete(Long id){
+        Optional<Book> foundedBook = getByID(id);
+
+        if(foundedBook.isPresent()){
+            books.remove(id);
+        }
+    }
 }

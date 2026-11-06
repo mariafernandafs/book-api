@@ -4,6 +4,7 @@ import br.com.estudos.book_api.dto.BookRequest;
 import br.com.estudos.book_api.dto.BookResponse;
 import br.com.estudos.book_api.model.Book;
 import br.com.estudos.book_api.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public BookResponse save(@RequestBody BookRequest bookRequest){
+    public BookResponse save(@Valid @RequestBody BookRequest bookRequest){
         Book book = new Book(bookRequest.title(), bookRequest.author());
         Book savedBook = bookService.save(book);
         return new BookResponse(savedBook.id(), savedBook.title(), savedBook.author());
@@ -44,9 +45,18 @@ public class BookController {
     @GetMapping("/{id}")
     public BookResponse getById(@PathVariable Long id){
         Book book = bookService.getById(id);
-        BookResponse bookResponse = new BookResponse(book.id(), book.title(), book.author());
-        return bookResponse;
+        return new BookResponse(book.id(), book.title(), book.author());
     }
 
+    @PutMapping("/{id}")
+    public BookResponse updateBook(@PathVariable Long id, @RequestBody BookRequest bookRequest){
+        Book updatedBook = bookService.updateByID(id, bookRequest);
+        return new BookResponse(updatedBook.id(), updatedBook.title(), updatedBook.author());
+    }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable Long id){
+        bookService.delete(id);
+    }
 }
